@@ -12,13 +12,15 @@ function createBalloon(canvasContext, minX, maxX, minY, maxY) {
 
         initialise() {
             this.diameter = this.randomInteger(10, 100);
-            this.xPos = this.randomInteger(minX, maxX);
-            this.yPos = this.minY + this.diameter / 2;
+            this.xPos = this.randomInteger(minX + this.diameter / 2, maxX - this.diameter / 2);
+            this.yPos = this.minY;
         },
         isClicked(evt) {
             return false;
         },
-
+        isOutsideCanvas() {
+            return this.yPos > maxY + this.diameter;
+        },
         move() {
             this.yPos += this.fallSpeed / 30; //frames/second
         },

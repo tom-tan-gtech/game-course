@@ -42,7 +42,7 @@ function addBalloon() {
 
     if (lastBalloonCreation + 1000 > Date.now())
         return;
-    const balloon = createBalloon(canvasContext, 0, canvas.width, topPanelPos.y + topPanelPos.height, canvas.height);
+    const balloon = createBalloon(canvasContext, 0, canvas.width, topPanelPos.y, canvas.height);
     balloon.initialise();
 
     balloons.push(balloon);
@@ -67,6 +67,12 @@ function moveEverything() {
         balloons[i].move();
     }
 
+    // housekeeping
+    const keep = balloons.filter(balloon => !balloon.isOutsideCanvas());
+    balloons = keep;
+
+    console.log(balloons.length);
+
     // create new target if 1 sec has elapsed
 }
 
@@ -84,7 +90,7 @@ function drawTopPanel() {
         topPanelPos.y,
         topPanelPos.width,
         topPanelPos.height,
-        "red", false
+        "white", true
     );
     drawScore(0);
     drawButton();
@@ -117,6 +123,7 @@ function drawBottomPanel() {
 function drawBalloons() {
     for (let i = 0; i < balloons.length; i++) {
         balloons[i].draw();
+        drawTopPanel();
     }
 }
 
