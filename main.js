@@ -1,15 +1,15 @@
-// import { createBalloon } from "./balloon.js";
 import { createBalloon } from './balloon.js';
-var canvas;
-var canvasContext;
+
+let canvas;
+let canvasContext;
 
 const BLACK_COLOR = "black";
 const TOP_PANEL_HEIGHT = 100;
 
-var topPanelPos;
-var startButtonPos;
-var balloons = [];
-var lastBalloonCreation;
+let topPanelPos;
+let startButtonPos;
+let balloons = [];
+let lastBalloonCreation = Date.now();
 
 window.onload = function () {
     canvas = document.getElementById("gameCanvas");
@@ -17,10 +17,9 @@ window.onload = function () {
 
     initialise();
 
-    var framesPerSecond = 30;
+    let framesPerSecond = 30;
     setInterval(function () {
-        moveEverything();
-        drawEverything();
+        run();
     }, 1000 / framesPerSecond);
 
     canvas.addEventListener("mousedown", handleMouseClick);
@@ -35,18 +34,37 @@ function initialise() {
         height: 30,
     };
 
-    balloons.push(createBalloon(canvasContext, 0, canvas.width));
-    lastBalloonCreation = Date.now();
+    addBalloon();
 }
 
+function addBalloon() {
+    // if (balloons.length > 1) return;
+
+    if (lastBalloonCreation + 1000 > Date.now())
+        return;
+    const balloon = createBalloon(canvasContext, 0, canvas.width, topPanelPos.y + topPanelPos.height, canvas.height);
+    balloon.initialise();
+
+    balloons.push(balloon);
+    lastBalloonCreation = Date.now();
+}
 function handleMouseClick(evt) { }
 
+
+function run() {
+    moveEverything();
+    drawEverything();
+}
+
 function moveEverything() {
-    for (let balloon of balloons) {
+    // add new balloon
+    addBalloon();
+
+    for (let i = 0; i < balloons.length; i++) {
         // animate all existing balloons
         // loop balloon list, move balloons down a step
         // if a balloon is at bottom edge, delete the balloon
-        balloon.move();
+        balloons[i].move();
     }
 
     // create new target if 1 sec has elapsed
@@ -93,13 +111,12 @@ function drawButton() {
 }
 
 function drawBottomPanel() {
-    // drawCircle(50, 300, 20, 20);
     drawBalloons();
 }
 
 function drawBalloons() {
-    for (let balloon of balloons) {
-        balloon.draw();
+    for (let i = 0; i < balloons.length; i++) {
+        balloons[i].draw();
     }
 }
 
