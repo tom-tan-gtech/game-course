@@ -43,7 +43,8 @@ function addBalloon() {
 
     if (lastBalloonCreation + 1000 > Date.now())
         return;
-    const balloon = createBalloon(canvasContext, 0, canvas.width, topPanelPos.y, canvas.height);
+    // const balloon = createBalloon(canvasContext, 0, canvas.width, topPanelPos.y + topPanelPos.height, canvas.height);
+    const balloon = createBalloon(canvasContext, 0, canvas.width, topPanelPos.height, canvas.height);
     balloon.initialise();
 
     balloons.push(balloon);

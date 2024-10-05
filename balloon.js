@@ -5,7 +5,7 @@ function createBalloon(canvasContext, minX, maxX, minY, maxY) {
         xPos: 0,
         diameter: 0, //10-100 px
         yPos: 0,
-        fallSpeed: 100, //10-100 px/sec
+        fallSpeed: 10, //10-100 px/sec
         color: "black",
         minY: minY,
         maxY: maxY,
@@ -15,7 +15,7 @@ function createBalloon(canvasContext, minX, maxX, minY, maxY) {
         initialise() {
             this.diameter = this.randomInteger(10, 100);
             this.xPos = this.randomInteger(minX + this.diameter / 2, maxX - this.diameter / 2);
-            this.yPos = this.minY;
+            this.yPos = this.minY - this.diameter / 2;
             this.value = this.calculateValue(this.diameter);
         },
         calculateValue(size) {
