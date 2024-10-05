@@ -48,8 +48,24 @@ function addBalloon() {
     balloons.push(balloon);
     lastBalloonCreation = Date.now();
 }
-function handleMouseClick(evt) { }
+function handleMouseClick(evt) {
+    var mousePos = calculateMousePos(evt);
 
+    for (let i = 0; i < balloons.length; i++) {
+        balloons[i].clicked(mousePos.x, mousePos.y);
+    }
+}
+
+function calculateMousePos(evt) {
+    var rect = canvas.getBoundingClientRect();
+    var root = document.documentElement;
+    var mouseX = evt.clientX - rect.left - root.scrollLeft;
+    var mouseY = evt.clientY - rect.top - root.scrollTop;
+    return {
+        x: mouseX,
+        y: mouseY,
+    };
+}
 
 function run() {
     moveEverything();
@@ -68,7 +84,7 @@ function moveEverything() {
     }
 
     // housekeeping
-    const keep = balloons.filter(balloon => !balloon.isOutsideCanvas());
+    const keep = balloons.filter(balloon => !balloon.isOutsideGameArea());
     balloons = keep;
 
     console.log(balloons.length);
