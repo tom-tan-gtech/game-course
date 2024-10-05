@@ -10,6 +10,7 @@ let topPanelPos;
 let startButtonPos;
 let balloons = [];
 let lastBalloonCreation = Date.now();
+let score = 0;
 
 window.onload = function () {
     canvas = document.getElementById("gameCanvas");
@@ -52,7 +53,10 @@ function handleMouseClick(evt) {
     var mousePos = calculateMousePos(evt);
 
     for (let i = 0; i < balloons.length; i++) {
-        balloons[i].clicked(mousePos.x, mousePos.y);
+        const isHit = balloons[i].clicked(mousePos.x, mousePos.y);
+        if (isHit) {
+            score += balloons[i].getValue();
+        }
     }
 }
 
@@ -108,7 +112,7 @@ function drawTopPanel() {
         topPanelPos.height,
         "white", true
     );
-    drawScore(0);
+    drawScore(score);
     drawButton();
 }
 
@@ -130,6 +134,8 @@ function drawButton() {
         startButtonPos.x + 40,
         startButtonPos.y + 20
     );
+    canvasContext.fillText(score, topPanelPos.x + 40, topPanelPos.y + 40);
+
 }
 
 function drawBottomPanel() {
